@@ -1,13 +1,23 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    email_address (0.1.11)
+      netaddr (~> 2.0)
+      simpleidn
     ipaddr (1.2.0)
     maxminddb (0.1.21)
+    netaddr (2.0.3)
+    simpleidn (0.1.1)
+      unf (~> 0.1.4)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.5)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  email_address
   ipaddr
   maxminddb (~> 0.1)
 

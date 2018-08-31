@@ -25,5 +25,7 @@ class TestIndicator < Minitest::Test
     assert 'https://csirtg.io'.cc == 'US'
 
     assert '192.168.1.0/24'.to_ip
+
+    assert 'wes@csirtgadgets.com'.itype == 'email'
   end
 end

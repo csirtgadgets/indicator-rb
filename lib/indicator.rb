@@ -69,7 +69,8 @@ module StringIndicatorExtensions
     end
 
     def _email?(i)
-      EmailValidator.valid?(i)
+      # https://github.com/balexand/email_validator/blob/master/lib/email_validator.rb
+      /\A\s*([^@\s]{1,64})@((?:[-\p{L}\d]+\.)+\p{L}{2,})\s*\z/i.match(i)
     end
 
     def _md5(i)
