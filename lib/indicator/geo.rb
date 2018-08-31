@@ -1,8 +1,6 @@
 require 'resolv'
 require 'maxminddb'
 
-DNS_RESOLVER = Resolv::DNS.new
-
 GEO_PATHS = %w(
   /var/lib/GeoIP
   /usr/local/var/GeoIP

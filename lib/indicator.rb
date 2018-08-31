@@ -1,7 +1,12 @@
 require 'ipaddr'
 require 'uri'
-require 'indicator/geo'
+require 'resolv'
 require 'indicator/ipaddr'
+require 'indicator/fqdn'
+require 'indicator/geo'
+
+DNS_RESOLVER = Resolv::DNS.new
+
 #require 'email_validator'
 
 module StringIndicatorExtensions
