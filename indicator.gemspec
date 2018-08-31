@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name        = 'indicator-rb'
+  s.name        = 'indicator'
   s.version     = '0.0a1'
   s.date        = '2018-08-31'
   s.summary     = 'Indicators made easy'
