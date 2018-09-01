@@ -35,6 +35,15 @@ module StringIndicatorExtensions
     self.itype == 'url'
   end
 
+  def indicator_from_string
+    indicators = []
+    self.split(' ').each do |w|
+      w.gsub!(/[\.\?]$/, '')
+      indicators.push(w) if w.itype
+    end
+    indicators
+  end
+
   private
     def _ipv4(i)
       begin

@@ -28,4 +28,9 @@ class TestIndicator < Minitest::Test
 
     assert 'wes@csirtgadgets.com'.itype == 'email'
   end
+
+  def test_indicator_from_string
+    indicators = 'this is an example.com of an indicator that yields 192.168.1.1'.indicator_from_string
+    assert indicators.size == 2
+  end
 end
