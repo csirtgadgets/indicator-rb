@@ -27,6 +27,11 @@ module StringIndicatorExtensions
     %(ipv4 ipv6).include? self.itype
   end
 
+  def prefix?
+    return unless ip?
+    self.to_ip.prefix?
+  end
+
   def hash?
     %(md5 sha1 sha256 sha512).include? self.itype
   end
