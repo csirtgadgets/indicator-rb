@@ -1,6 +1,8 @@
 require 'ipaddr'
 require 'uri'
 require 'resolv'
+require 'whois'
+require 'whois-parser'
 require 'indicator/ipaddr'
 require 'indicator/fqdn'
 require 'indicator/geo'
@@ -40,6 +42,10 @@ module StringIndicatorExtensions
     self.itype == 'url'
   end
 
+  def fqdn?
+    itype == 'fqdn'
+  end
+
   def indicator_from_string
     indicators = []
     self.split(' ').each do |w|
@@ -47,6 +53,27 @@ module StringIndicatorExtensions
       indicators.push(w) if w.itype
     end
     indicators
+  end
+
+  def whois
+    Whois.whois(self).parser
+  end
+
+  def created_at
+    begin
+      self.whois.created_on if self.fqdn?
+      self.whois.regdate if self.ip?
+    rescue
+      return
+    end
+  end
+
+  def updated_at
+    begin
+      self.whois.updated_on
+    rescue
+      return
+    end
   end
 
   private
