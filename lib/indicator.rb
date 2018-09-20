@@ -56,13 +56,25 @@ module StringIndicatorExtensions
   end
 
   def whois
-    return unless %(fqdn ipv4 ipv6).include? self.itype
     return unless self
+    return unless %(fqdn ipv4 ipv6 url).include? self.itype
+
+    r = self
+    if itype == 'fqdn'
+      r = self.split('.').last(2).join('.')
+    end
+
+    if self.itype == 'url'
+      r = URI(self).host
+      r = r.split('.').last(2).join('.')
+    end
+
     begin
-      r = Whois.whois(self).parser
+      r = Whois.whois(r).parser
     rescue Timeout::Error => e
       return
     end
+    r
   end
 
   def created_at
