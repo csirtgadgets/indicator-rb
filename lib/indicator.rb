@@ -22,6 +22,7 @@ module StringIndicatorExtensions
     return 'sha1' if _sha1(self)
     return 'sha256' if _sha256(self)
     return 'sha512' if _sha512(self)
+    return 'cc' if _cc(self)
     'asn' if _asn(self)
   end
 
@@ -44,6 +45,10 @@ module StringIndicatorExtensions
 
   def fqdn?
     itype == 'fqdn'
+  end
+
+  def cc?
+    itype == 'cc'
   end
 
   def indicator_from_string
@@ -151,6 +156,12 @@ module StringIndicatorExtensions
     def _asn(i)
       return false if i.upcase == 'AS'
       /^ASN?(?:[1-9]\d*|0)?(?:\.\d+)?$/.match(i.upcase)
+    end
+
+    # TODO? https://datahub.io/core/country-codes#data
+    def _cc(i)
+      return false if %w(url uri md5 cc).include? i
+      /^[A-Z]{2,3}$/.match(i.upcase)
     end
 end
 
