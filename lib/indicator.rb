@@ -31,7 +31,7 @@ module StringIndicatorExtensions
   end
 
   def indicator?
-    itype.nil?
+    return true unless itype.nil?
   end
 
   def prefix?
