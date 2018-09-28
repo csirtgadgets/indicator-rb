@@ -23,11 +23,16 @@ module StringIndicatorExtensions
     return 'sha256' if _sha256(self)
     return 'sha512' if _sha512(self)
     return 'cc' if _cc(self)
-    'asn' if _asn(self)
+    return 'asn' if _asn(self)
+    ''
   end
 
   def ip?
     %(ipv4 ipv6).include? self.itype
+  end
+
+  def indicator?
+    itype.nil?
   end
 
   def prefix?
