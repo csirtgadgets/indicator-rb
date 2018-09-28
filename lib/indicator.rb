@@ -23,12 +23,11 @@ module StringIndicatorExtensions
     return 'sha256' if _sha256(self)
     return 'sha512' if _sha512(self)
     return 'cc' if _cc(self)
-    return 'asn' if _asn(self)
-    ''
+    'asn' if _asn(self)
   end
 
   def ip?
-    %(ipv4 ipv6).include? self.itype
+    %(ipv4 ipv6).include? self.itype.to_s
   end
 
   def indicator?
@@ -41,7 +40,7 @@ module StringIndicatorExtensions
   end
 
   def hash?
-    %(md5 sha1 sha256 sha512).include? self.itype
+    %(md5 sha1 sha256 sha512).include? self.itype.to_s
   end
 
   def url?
@@ -67,7 +66,7 @@ module StringIndicatorExtensions
 
   def whois
     return unless self
-    return unless %(fqdn ipv4 ipv6 url).include? self.itype
+    return unless %(fqdn ipv4 ipv6 url).include? self.itype.to_s
 
     r = self
     if itype == 'fqdn'
