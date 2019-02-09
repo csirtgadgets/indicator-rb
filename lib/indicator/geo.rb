@@ -41,32 +41,40 @@ module StringGeoExtensions
   end
 
   private
-  def _resolve(i)
-    begin
-      if i.itype == 'url'
-        i = URI(i).host
+    def _resolve(i)
+      begin
+        if i.itype == 'url'
+          i = URI(i).host
+        end
+        host = DNS_RESOLVER.getaddress(i)
+      rescue Resolv::ResolvError
+        return
       end
-      host = DNS_RESOLVER.getaddress(i)
-    rescue Resolv::ResolvError => e
-      return
+
+      host.to_s
     end
 
-    host.to_s
-  end
+    def lookup(asn=false)
+      if self.ip?
+        r = self
+      else
+        r = _resolve(self)
+      end
 
-  def lookup(asn=false)
-    begin
-      return unless self.to_ip
-      r = self
-    rescue
-      r = _resolve(self)
       return unless r
-    end
 
-    r = (asn)? GEOIP_ASN.lookup(r) : GEOIP_CC.lookup(r)
-    return unless r.found?
-    r
-  end
+      # begin
+      #   return unless self.ip?
+      #   r = self
+      # rescue
+      #   r = _resolve(self)
+      #   return unless r
+      # end
+
+      r = (asn)? GEOIP_ASN.lookup(r) : GEOIP_CC.lookup(r)
+      return unless r.found?
+      r
+    end
 end
 
 String.send(:include, StringGeoExtensions)

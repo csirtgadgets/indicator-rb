@@ -3,6 +3,7 @@ require 'uri'
 require 'resolv'
 require 'whois'
 require 'whois-parser'
+require 'addressable'
 require 'indicator/ipaddr'
 require 'indicator/fqdn'
 require 'indicator/geo'
@@ -13,11 +14,11 @@ DNS_RESOLVER = Resolv::DNS.new
 
 module StringIndicatorExtensions
   def itype
-    return 'ipv4' if _ipv4(self)
-    return 'ipv6' if _ipv6(self)
-    return 'fqdn' if _fqdn(self)
     return 'url' if _url(self)
     return 'email' if _email?(self)
+    return 'fqdn' if _fqdn(self)
+    return 'ipv4' if _ipv4(self)
+    return 'ipv6' if _ipv6(self)
     return 'md5' if _md5(self)
     return 'sha1' if _sha1(self)
     return 'sha256' if _sha256(self)
@@ -27,11 +28,15 @@ module StringIndicatorExtensions
   end
 
   def ip?
-    %(ipv4 ipv6).include? self.itype.to_s
+    %w(ipv4 ipv6).include? self.itype.to_s
   end
 
   def indicator?
-    return true unless itype.nil?
+    return false if itype.nil?
+    return true if ip?
+    return true if hash?
+    return true if %w(fqdn url email).include? itype
+    false
   end
 
   def prefix?
@@ -40,7 +45,7 @@ module StringIndicatorExtensions
   end
 
   def hash?
-    %(md5 sha1 sha256 sha512).include? self.itype.to_s
+    %w(md5 sha1 sha256 sha512).include? self.itype.to_s
   end
 
   def url?
@@ -51,6 +56,10 @@ module StringIndicatorExtensions
     itype == 'fqdn'
   end
 
+  def email?
+    itype == 'email'
+  end
+
   def cc?
     itype == 'cc'
   end
@@ -59,14 +68,14 @@ module StringIndicatorExtensions
     indicators = []
     self.split(' ').each do |w|
       w.gsub!(/[\.\?]$/, '')
-      indicators.push(w) if w.itype
+      indicators.push(w) if w.indicator?
     end
     indicators
   end
 
   def whois
     return unless self
-    return unless %(fqdn ipv4 ipv6 url).include? self.itype.to_s
+    return unless %w(fqdn ipv4 ipv6 url).include? self.itype.to_s
 
     r = self
     if itype == 'fqdn'
@@ -80,7 +89,7 @@ module StringIndicatorExtensions
 
     begin
       r = Whois.whois(r).parser
-    rescue Timeout::Error => e
+    rescue Timeout::Error
       return
     end
     r
@@ -106,7 +115,7 @@ module StringIndicatorExtensions
   private
     def _ipv4(i)
       begin
-        x = IPAddr.new(i)
+        x = i.to_ip
       rescue
         return false
       end
@@ -115,7 +124,7 @@ module StringIndicatorExtensions
 
     def _ipv6(i)
       begin
-        x = IPAddr.new(i)
+        x = i.to_ip
       rescue
         return false
       end
@@ -128,9 +137,8 @@ module StringIndicatorExtensions
 
     def _url(i)
       begin
-        x = URI.escape(i)
-        x = URI(x)
-      rescue URI::InvalidURIError
+        x = Addressable::URI.parse(i)
+      rescue
         return false
       end
       (x.scheme.eql?('http') || x.scheme.eql?('https'))

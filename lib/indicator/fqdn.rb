@@ -9,7 +9,7 @@ module StringFQDNExtensions
 
     begin
       host = DNS_RESOLVER.getaddress(i)
-    rescue Resolv::ResolvError => e
+    rescue Resolv::ResolvError
       return
     end
 
@@ -60,16 +60,14 @@ module StringFQDNExtensions
     end
 
     return unless r.length > 0
-    r.map{|r| r.exchange.to_s unless /root-servers.net/.match(r.exchange.to_s) }
+    r.map{|rr| rr.exchange.to_s unless /root-servers.net/.match(rr.exchange.to_s) }
   end
 
   private
     def to_fqdn
       i = self
       if i.start_with? 'http'
-        i = URI.escape(i)
-        i = URI(i)
-        i = i.host
+        i = Addressable::URI.parse(i).normalize.host
       end
 
       if /@/.match(i)

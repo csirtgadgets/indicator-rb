@@ -522,10 +522,16 @@ module IPAddrExtensions
 end
 
 module StringIPExtensions
+
+  def normalize_v4
+    return self unless self.include? '.'
+    self.split('.').map{|b| b.to_i }.join('.')
+  end
+
   def to_ip
     begin
-      IPAddr.new(self.to_s)
-    rescue ArgumentError => e
+      IPAddr.new(self.to_s.normalize_v4)
+    rescue ArgumentError
       raise ArgumentError, "invalid address #{self.inspect}"
     end
   end

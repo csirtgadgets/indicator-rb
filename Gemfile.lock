@@ -1,25 +1,47 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    activesupport (5.2.2)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
+    addressable (2.6.0)
+      public_suffix (>= 2.0.2, < 4.0)
+    concurrent-ruby (1.1.4)
     email_address (0.1.11)
       netaddr (~> 2.0)
       simpleidn
+    i18n (1.5.3)
+      concurrent-ruby (~> 1.0)
     ipaddr (1.2.0)
     maxminddb (0.1.21)
+    minitest (5.11.3)
     netaddr (2.0.3)
+    public_suffix (3.0.3)
     simpleidn (0.1.1)
       unf (~> 0.1.4)
+    thread_safe (0.3.6)
+    tzinfo (1.2.5)
+      thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
+    whois (4.0.7)
+    whois-parser (1.1.0)
+      activesupport (>= 4)
+      whois (>= 4.0.6)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  addressable
   email_address
   ipaddr
   maxminddb (~> 0.1)
+  whois
+  whois-parser
 
 BUNDLED WITH
-   1.15.4
+   1.17.2
