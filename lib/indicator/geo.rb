@@ -40,6 +40,25 @@ module StringGeoExtensions
     r.country.iso_code.upcase
   end
 
+  def city(all=false)
+    r = lookup || return
+    return unless r.city
+    return r.to_hash if all
+    r.city.name
+  end
+
+  def location
+    r = lookup || return
+    return unless r.city
+    {
+        city: r.city.name,
+        region: r.subdivisions[0].name,
+        cc: r.country.iso_code
+
+    }
+
+  end
+
   private
     def _resolve(i)
       begin
