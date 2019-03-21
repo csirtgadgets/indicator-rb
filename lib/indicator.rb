@@ -123,6 +123,8 @@ module StringIndicatorExtensions
       rescue
         return false
       end
+
+      return false if x == '0.0.0.0'
       x.ipv4?
     end
 
