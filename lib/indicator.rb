@@ -87,6 +87,10 @@ module StringIndicatorExtensions
       r = r.split('.').last(2).join('.')
     end
 
+    if self.itype == 'ipv4' and /\/\d{1,2}$/.match(self)
+      r = self.gsub(/\/\d{1,2}$/, '')
+    end
+
     begin
       r = Whois.whois(r).parser
     rescue Timeout::Error

@@ -54,7 +54,6 @@ module StringGeoExtensions
         city: r.city.name,
         region: r.subdivisions[0].name,
         cc: r.country.iso_code
-
     }
 
   end
