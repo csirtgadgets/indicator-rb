@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
       'http://rubygems.org/gems/indicator'
   s.license       = 'MPL2'
 
-  %w(email_address whois whois-parser).each do |d|
+  %w(email_address whois whois-parser ruby_sscanf).each do |d|
     s.add_runtime_dependency d
   end
 end

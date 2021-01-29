@@ -1,7 +1,7 @@
 # https://github.com/jamesotron/IPAddrExtensions/blob/master/lib/ipaddr_extensions.rb
 
 require 'ipaddr'
-require 'scanf'
+require 'ruby_sscanf'
 require 'digest/sha1'
 
 module IPAddrExtensions
@@ -237,7 +237,7 @@ module IPAddrExtensions
       end
     elsif @family == Socket::AF_INET6
       if IPAddr.new("2000::/3").include? self
-        require 'scanf'
+        require 'sscanf'
         if is_6to4?
           "GLOBAL UNICAST (6to4: #{from_6to4})"
         elsif is_teredo?
@@ -254,10 +254,10 @@ module IPAddrExtensions
       elsif IPAddr.new("::1/128") == self
         "LINK LOCAL LOOPBACK"
       elsif IPAddr.new("::ffff:0:0/96").include? self
-        a,b,c,d = self.to_string.scanf("%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%4x:%4x:%4x:%4x")
+        a,b,c,d = self.to_string.sscanf("%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%4x:%4x:%4x:%4x")
         "IPv4 MAPPED (#{a.to_s}.#{b.to_s}.#{c.to_s}.#{d.to_s})"
       elsif IPAddr.new("::/96").include? self
-        a,b,c,d = self.to_string.scanf("%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%4x:%4x:%4x:%4x")
+        a,b,c,d = self.to_string.sscanf("%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%*4x:%4x:%4x:%4x:%4x")
         "IPv4 TRANSITION (#{a.to_s}.#{b.to_s}.#{c.to_s}.#{d.to_s}, deprecated)"
       elsif IPAddr.new("fc00::/7").include? self
         "UNIQUE LOCAL UNICAST"
@@ -266,7 +266,7 @@ module IPAddrExtensions
       elsif IPAddr.new("fe80::/10").include? self
         "LINK LOCAL UNICAST"
       elsif IPAddr.new("ff00::/8").include? self
-        mscope,mdesta,mdestb = self.to_string.scanf("%*1x%*1x%*1x%1x:%*4x:%*4x:%*4x:%*4x:%*4x:%4x:%4x")
+        mscope,mdesta,mdestb = self.to_string.sscanf("%*1x%*1x%*1x%1x:%*4x:%*4x:%*4x:%*4x:%*4x:%4x:%4x")
         mdest = (mdesta << 16) + mdestb
         s = "MULTICAST"
         if MSCOPES[mscope]
@@ -474,7 +474,7 @@ module IPAddrExtensions
     IPAddr.new("2002::/16").include? self
   end
   def from_6to4
-    x = self.to_string.scanf("%*4x:%4x:%4x:%s")
+    x = self.to_string.sscanf("%*4x:%4x:%4x:%s")
     IPAddr.new((x[0]<<16)+x[1], Socket::AF_INET)
   end
 

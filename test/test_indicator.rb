@@ -31,6 +31,8 @@ class TestIndicator < Minitest::Test
     assert '10.233.18.116:43880'.itype != 'ip'
 
     assert not('http://medhurstanderson.orgkulaswisozk.comjakubowski.name'.ip?)
+
+    #assert '128.205.1.1'.city == 'buffalo'
   end
 
   def test_indicator_from_string

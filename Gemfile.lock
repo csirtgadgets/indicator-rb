@@ -15,7 +15,7 @@ GEM
     i18n (1.5.3)
       concurrent-ruby (~> 1.0)
     ipaddr (1.2.0)
-    maxminddb (0.1.21)
+    maxminddb (0.1.22)
     minitest (5.11.3)
     netaddr (2.0.3)
     public_suffix (3.0.3)
