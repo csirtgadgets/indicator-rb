@@ -17,7 +17,7 @@ GEM
     ipaddr (1.2.0)
     maxminddb (0.1.22)
     minitest (5.11.3)
-    netaddr (2.0.3)
+    netaddr (2.0.4)
     public_suffix (3.0.3)
     simpleidn (0.1.1)
       unf (~> 0.1.4)
