@@ -237,7 +237,7 @@ module IPAddrExtensions
       end
     elsif @family == Socket::AF_INET6
       if IPAddr.new("2000::/3").include? self
-        require 'sscanf'
+        require 'ruby_sscanf'
         if is_6to4?
           "GLOBAL UNICAST (6to4: #{from_6to4})"
         elsif is_teredo?
